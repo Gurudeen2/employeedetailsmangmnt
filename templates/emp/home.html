@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Employee Management System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    {% include 'emp/navbar.html' %}
+    <div class="container">
+      <h1 class="text-left my-3">Employees Table</h1>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div style="padding: 2rem"></div>
+
+            <div class="card-body">
+              <div class="mb-3" style="text-align: right;">
+                <a class="btn btn-md btn-dark" href="{% url 'add-emp' %}" 
+                style="background-color: #39b5e0; 
+                font-size:medium ; font-weight: bold; 
+                border: none; padding: 2rem; 
+                width: 14rem; height:5rem ;"
+                  >Add New Employee</a
+                >
+              </div>
+              <form action="{% url 'search' %}">
+                <div style="text-align: right">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="search"
+                    placeholder="search by name"
+                  />
+                  <input
+                    type="submit"
+                    class="btn btn-md btn-success mt-1"
+                    value="Search"
+                  />
+                </div>
+              </form>
+
+              <table class="table table-light table-striped table-hover mt-3">
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>NAME</th>
+                    
+                    <th>Gender</th>
+                    <th>PHONE</th>
+
+                    <th>CLIENT</th>
+
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if emps %} {% for e in emps %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{e.name}}</td>
+                    <td>{{e.gender}}</td>
+                    <td>{{e.phone}}</td>
+
+                    <td>{{e.client}}</td>
+
+
+                    <td>
+                      <a
+                        href="/emp/delete-emp/{{e.id}}"
+                        class="btn btn-danger btn-sm"
+                        >Delete</a
+                      >
+                      <a
+                        href="/emp/update-emp/{{e.id}}"
+                        class="btn btn-success btn-sm"
+                        >Update</a
+                      >
+                      <a
+                        href="{% url 'view-emp' e.id %}"
+                        class="btn btn-primary btn-sm"
+                        >View</a
+                      >
+                    </td>
+                  </tr>
+                  {%endfor%} {% else %}
+                  <tr>
+                    <td>No Record Found</td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                {% if emps.has_other_pages %}
+                <ul class="pagination">
+                  {% if emps.has_previous %}
+                  <li class="page-item">
+                    <a
+                      href="?page={{ emps.previous_page_number}}"
+                      class="page-link"
+                      >&laquo;</a
+                    >
+                  </li>
+                  {% else %}
+                  <li class="page-item disable">
+                    <a class="page-link">&laquo;</a>
+                  </li>
+                  {% endif %} {% for i in emps.paginator.page_range %} 
+                  {% if emps.number == i %}
+                  <li class="page-item active">
+                    <a class="page-link">{{i}}</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item">
+                    <a href="?page={{i}}" class="page-link">{{i}}</a>
+                  </li>
+                  {% endif %} {% endfor %} {% if emps.has_next %}
+                  <li class="page-item">
+                    <a href="?page={{ emps.next_page_number}}" class="page-link"
+                      >&raquo;</a
+                    >
+                  </li>
+                  {% else %}
+                  <li class="page-item disable">
+                    <a class="page-link">&raquo;</a>
+                  </li>
+                  {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+
+   
+    <br/>
+    <br/>
+    <br/>
+  </body>
+</html>
